@@ -1,18 +1,15 @@
-import com.sun.source.tree.NewArrayTree;
+
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Calculator {
-    public static void main(String[] args) throws RuntimeException {
+    public static String calc(String input) throws RuntimeException {
         String result = "";
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите строку");
-        String str = scanner.nextLine();
 
         Pattern patternMatch = Pattern.compile("^(\\\")(\\D+|\\d+)(\\\")([ ]*)([\\+\\-\\/\\*])([ ]*)(\\\"*)(\\D+|[0-9]+)(\\\"*)$");
-        Matcher matcherMatch = patternMatch.matcher(str);
+        Matcher matcherMatch = patternMatch.matcher(input);
 
         if (matcherMatch.matches()) {  // Введенная строка соответствует шаблону
             Pattern patternMulti = Pattern.compile("([ ]*)\\*([ ]*)");
@@ -20,29 +17,29 @@ public class Calculator {
             Pattern patternPlus = Pattern.compile("([ ]*)\\+([ ]*)");
             Pattern patternMinus = Pattern.compile("([ ]*)\\-([ ]*)");
 
-            Matcher matcherMulti = patternMulti.matcher(str);
-            Matcher matcherDiv = patternDiv.matcher(str);
-            Matcher matcherPlus = patternPlus.matcher(str);
-            Matcher matcherMinus = patternMinus.matcher(str);
+            Matcher matcherMulti = patternMulti.matcher(input);
+            Matcher matcherDiv = patternDiv.matcher(input);
+            Matcher matcherPlus = patternPlus.matcher(input);
+            Matcher matcherMinus = patternMinus.matcher(input);
 
 
             if (matcherPlus.find()) { // Сложение строк
-                result = performStringAddition(str);
+                result = performStringAddition(input);
 
             } else if (matcherMinus.find()) {  // Вычитание строк
-                result = performStringSubtraction(str);
+                result = performStringSubtraction(input);
 
             } else if (matcherMulti.find()) {  // Умножение строки на целое число
-                result = performStringMultiplication(str);
+                result = performStringMultiplication(input);
 
             } else if (matcherDiv.find()) {  // Деление строки на целое число
-                result = performStringDivision(str);
+                result = performStringDivision(input);
 
             }
         } else {    // Введенная строка не соответствует шаблону
-            throw new RuntimeException("Неверный ввод");
+            throw new RuntimeException("Введите по одному из шаблонов (примеры): \"Kata\" + \"Ката\"  ; \"Kata\" - \"Ката\"  ; \"Kata\" * 2  ; \"Kata\" / 2  ");
         }
-        System.out.println("\"" + result + "\"");
+        return result;
     }
 
     private static String performStringAddition(String str) {
